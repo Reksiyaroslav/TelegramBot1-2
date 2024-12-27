@@ -5,7 +5,7 @@ from  aiogram.types import FSInputFile,BufferedInputFile
 import App.keyboards as kb
 import  App.logic as log
 router = Router()
-
+inform_text = ""
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
@@ -45,3 +45,23 @@ async def category_log_average_rating_grop(callback: CallbackQuery):
         except:
             print(f"{new_file.filename} не соответствует ожидаемому формату.")
 
+@router.message()
+async def create_file(message: Message):
+    await message.answer("файл получен")
+    new_file = message.document
+    if F.data == 'type_subject':
+
+        if new_file.file_name.endswith(".xlsx"):
+
+            log.new_type_sq(file=new_file.file_name, inform_text= inform_text)
+            await  message.answer(inform_text)
+        else:
+            await  message.answer(f"Не соответствует ожидаемому формату.")
+
+    elif F.data == 'average-rating-grop':
+        if new_file.file_name.endswith(".xlsx"):
+            file = FSInputFile(new_file.file_id, "Infor_file.xlsx")
+            log.new_average_rating_grop(file.filename, inform_text)
+            await  message.answer(inform_text)
+        else:
+            await  message.answer(f"Не соответствует ожидаемому формату.")
