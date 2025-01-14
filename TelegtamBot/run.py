@@ -1,6 +1,6 @@
 import asyncio
 from aiogram import Bot, Dispatcher
-from App.halndlers import router
+from App.handlers import router
 import os
 from dotenv  import load_dotenv
 async def main():
