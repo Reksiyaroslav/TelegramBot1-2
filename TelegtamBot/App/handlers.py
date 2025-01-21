@@ -4,9 +4,11 @@ from aiogram.filters import CommandStart, Command
 from  aiogram.types import FSInputFile,BufferedInputFile
 import App.keyboards as kb
 import  App.logic as log
+import  os
 router = Router()
 inform_text = ""
 list_text = []
+
 @router.message(CommandStart())
 async def cmd_start(message: Message):
     await  message.answer("Здраствуйте выбирайте функцую которую вам нужно", reply_markup=kb.keyboard_main)
@@ -18,7 +20,6 @@ class FmsContext():
 @router.message(Command("help"))
 async def hellp(message: Message):
     await  message.answer("Какие у вас вопросы ?",reply_markup=kb.keyboard_help)
-
 
 @router.callback_query(F.data == 'homework_teacher')
 async def category_log_homework_teacher(callback: CallbackQuery):
@@ -62,36 +63,42 @@ async def category_log_homework_teacher_day(callback: CallbackQuery):
     await  callback.answer("Вы выбрали day")
     await  callback.message.answer("Вы выбрали day")
     FmsContext.time= "День"
-    await  callback.message.answer("Оправте файл")
+    await  callback.message.answer("Оправте файл"
+                                   )
 @router.callback_query(F.data == 'average_rating_grop')
 async def category_log_average_rating_grop(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
     await  callback.message.answer("Вы выбрали средняя поешаемоть у преподователя")
     FmsContext.text = "Вы выбрали средняя поешаемоть у преподователя"
-
     await  callback.message.answer("Оправте файл")
+
 @router.callback_query(F.data == 'student_assessment')
 async def category_log_student_assessment(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
     await  callback.message.answer("Вы выбрали провереть успеваемоть студентов")
     FmsContext.text=("Вы выбрали провереть успеваемоть студентов")
     await  callback.message.answer("Оправте файл")
+
 @router.callback_query(F.data == 'homework_student')
 async def category_log_student_assessment(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
     await  callback.message.answer("Вы выбрали провереть успеваемоть студентов")
     FmsContext.text=("Вы выбрали провереть процент дз у  студентов")
     await  callback.message.answer("Оправте файл")
+
 @router.message()
 async def create_file(message: Message):
     inform_text = FmsContext.text
     await message.answer("файл получен")
+    if not os.path.isdir(f"Fille{message.from_user.id}"):
+        os.mkdir(f"Fille{message.from_user.id}")
+    #os.chdir(f"Fille{message.from_user.id}")
     new_file = message.document
+    file_id = new_file.file_id
     if inform_text == "Вы выбрали средняя поешаемоть у преподователя":
-
+        tabel_file = open("label_Percentage_е.xlsx","wb+")
         if new_file.file_name.endswith(".xlsx"):
-
-            list_text = log.search_average_rating_grop(file=new_file)
+            list_text = log.search_average_rating_grop(file=file_id)
             inform_text = f"{list_text}"
             inform_text = inform_text.replace(',', "\n")
             inform_text = inform_text.strip("[]")
@@ -123,7 +130,6 @@ async def create_file(message: Message):
             await  message.answer(inform_text)
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
-
     elif inform_text == 'Вы выбрали провереть успеваемоть студентов':
         if new_file.file_name.endswith(".xlsx"):
             file = FSInputFile(new_file.file_id, "Infor_file.xlsx")
@@ -166,6 +172,5 @@ async def create_file(message: Message):
                 await  message.answer(inform_text)
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
-
     else:
         await  message.answer(f"Ошибка")

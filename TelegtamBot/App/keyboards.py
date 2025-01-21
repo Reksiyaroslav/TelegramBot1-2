@@ -14,6 +14,11 @@ keyboard_data = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="Месяц",callback_data="month")]
     ,[InlineKeyboardButton(text="Неделя",callback_data="week")]
     ,[InlineKeyboardButton(text="День",callback_data="day")]])
+
 keyboard_homework = InlineKeyboardMarkup(inline_keyboard=[
     [InlineKeyboardButton(text="Выданые дз ",callback_data="issued_homework")],
     [InlineKeyboardButton(text="Провереные  дз ",callback_data="verified_homework")]])
+
+keyboard_video = InlineKeyboardMarkup(inline_keyboard=[
+    [InlineKeyboardButton(text="Как работать с ботом?",callback_data="what work bot")],
+    [InlineKeyboardButton(text="Как связатся с разработчикам?",callback_data="what connect developer")]])
