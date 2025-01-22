@@ -8,25 +8,68 @@ import  os
 router = Router()
 inform_text = ""
 list_text = []
-
-@router.message(CommandStart())
-async def cmd_start(message: Message):
-    await  message.answer("Здраствуйте выбирайте функцую которую вам нужно", reply_markup=kb.keyboard_main)
-
 class FmsContext():
     text=""
     time=""
 
+@router.message(CommandStart())
+async def cmd_start(message: Message):
+    await  message.answer("Здравствуйте выбирайте функцию которую вам нужно",
+                          reply_markup=kb.keyboard_main)
+
 @router.message(Command("help"))
 async def hellp(message: Message):
-    await  message.answer("Какие у вас вопросы ?",reply_markup=kb.keyboard_help)
+    await  message.answer("Какие у вас вопросы ?",
+                          reply_markup=kb.keyboard_help)
+
+@router.callback_query(F.data == 'video_help')
+async def video_helps(callback: CallbackQuery):
+    await  callback.answer("Вы выбрали функцию")
+    await  callback.message.answer("Вы выбрали видео помощи с ботам ")
+    await  callback.message.answer("Теперь выберите что хотите получить :\n"
+    "Как работа с ботом? или Как связаться с разработчикам",
+                                   reply_markup=kb.keyboard_video)
+
+@router.callback_query(F.data== "information_help")
+async  def text_information(callback: CallbackQuery):
+    await  callback.answer("Вы выбрали функцию")
+    await  callback.message.answer("Вы выбрали получить информационный текс ")
+    await  callback.message.answer(f"Здравствуйте пользователь\n"
+                                   f"тут находится простая информация для "
+                                   f"интереса пользователей\n"
+                                   f"разработчик этого бота и мой господи Reksi_D\n"
+                                   f"он очень много вложи силы и время на "
+                                   f"мою разработку\n"
+                                   f"так что приятно что вы используйте "
+                                   f"меня для благой цели.\n"
+                                   f" Использование бота простое :\n"
+                                   f" Нажмите  на любую функцию которая вам нужна и "
+                                   f"оправите файл и \n"
+                                   f"получите что хотели.\n"
+                                   f"Если нужно связаться с разработчикам \n"
+                                   f"вот его имя пользователя:@Rexsi_D\n"
+                                   f"Хорошего вам дня. До свидания")
+@router.callback_query(F.data == 'what work bot')
+async def video_what_work_bot(callback: CallbackQuery):
+    await  callback.answer("Вы выбрали функцию")
+    await  callback.message.answer("Вы выбрали как работает бот")
+    video = FSInputFile('Files\\Myfiles\\1.mp4')
+    await callback.message.answer_video(video)
+
+@router.callback_query(F.data == 'what connect developer')
+async def video_what_connect_developer(callback: CallbackQuery):
+    await  callback.answer("Вы выбрали функцию")
+    await  callback.message.answer("Вы выбрали как найти разработчика ")
+    video = FSInputFile('Files\\Myfiles\\1.mp4')
+    await callback.message.answer_video(video)
 
 @router.callback_query(F.data == 'homework_teacher')
 async def category_log_homework_teacher(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
-    await  callback.message.answer("Вы выбрали посмотреть что с дз у преподователя")
+    await  callback.message.answer("Вы выбрали посмотреть что с дз у преподавателя")
     await  callback.message.answer("Теперь выберите что хотите получить :\n"
-    "Выданные дз или Проверенные  дз",reply_markup=kb.keyboard_homework)
+    "Выданные дз или Проверенные  дз",
+                            reply_markup=kb.keyboard_homework)
 
 @router.callback_query(F.data == 'issued_homework')
 async def category_log_homework_teacher_issued(callback: CallbackQuery):
@@ -89,15 +132,17 @@ async def category_log_student_assessment(callback: CallbackQuery):
 @router.message()
 async def create_file(message: Message):
     inform_text = FmsContext.text
+   #os.chdir(f"Files")
     await message.answer("файл получен")
-    if not os.path.isdir(f"Fille{message.from_user.id}"):
-        os.mkdir(f"Fille{message.from_user.id}")
-    #os.chdir(f"Fille{message.from_user.id}")
+    if not os.path.isdir(f"Files {message.from_user.id}"):
+        os.mkdir(f"Files {message.from_user.id}")
+    #os.chdir(f"Files {message.from_user.id}"")
     new_file = message.document
     file_id = new_file.file_id
     if inform_text == "Вы выбрали средняя поешаемоть у преподователя":
         tabel_file = open("label_Percentage_е.xlsx","wb+")
         if new_file.file_name.endswith(".xlsx"):
+
             list_text = log.search_average_rating_grop(file=file_id)
             inform_text = f"{list_text}"
             inform_text = inform_text.replace(',', "\n")
@@ -110,7 +155,9 @@ async def create_file(message: Message):
             await  message.answer(f"Не соответствует ожидаемому формату.")
 
     elif inform_text == "Вы выбрали узнать сколько проверенные  дз у преподователя":
+
         if new_file.file_name.endswith(".xlsx"):
+
             list_text= log.search_verified_homework(new_file,FmsContext.time)
             inform_text = f"{list_text}"
             inform_text = inform_text.replace(',', "\n")
@@ -120,32 +167,45 @@ async def create_file(message: Message):
             await  message.answer(inform_text)
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
+
     elif inform_text == "Вы выбрали узнать сколько выданно дз у преподователя":
+
         if new_file.file_name.endswith(".xlsx"):
+
             list_text= log.search_issued_homework(new_file,FmsContext.time)
             inform_text = f"{list_text}"
             inform_text = inform_text.replace(',',"\n")
             inform_text = inform_text.strip("[]")
             inform_text = inform_text.strip("'")
+
             await  message.answer(inform_text)
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
+
     elif inform_text == 'Вы выбрали провереть успеваемоть студентов':
+
         if new_file.file_name.endswith(".xlsx"):
+
             file = FSInputFile(new_file.file_id, "Infor_file.xlsx")
             list_text= log.search_student_assessment(file.filename)
             inform_text = f"{list_text}"
             inform_text = inform_text.replace(',', "\n")
             inform_text = inform_text.strip("[]")
             inform_text = inform_text.strip("'")
+
             await  message.answer(inform_text)
+
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
+
     elif inform_text == 'Вы выбрали провереть процент дз у  студентов':
+
         if new_file.file_name.endswith(".xlsx"):
+
             list_text_1 = []
             file = FSInputFile(new_file.file_id, "Infor_file.xlsx")
             list_text= log.search_percentage_of_homework_per_month(file.filename)
+
             if len(list_text) <50:
                 list_text = log.search_issued_homework(new_file, FmsContext.time)
                 inform_text = f"{list_text}"
@@ -153,6 +213,7 @@ async def create_file(message: Message):
                 inform_text = inform_text.strip("[]")
                 inform_text = inform_text.strip("'")
                 await  message.answer(inform_text)
+
             elif len(list_text) >50 and  len(list_text) <100:
 
                 for list_len in range(0,int(len(list_text)/2)):
@@ -170,7 +231,9 @@ async def create_file(message: Message):
                 inform_text = inform_text.strip("[]")
                 inform_text = inform_text.strip("'")
                 await  message.answer(inform_text)
+
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
+
     else:
         await  message.answer(f"Ошибка")
