@@ -34,33 +34,31 @@ async def video_helps(callback: CallbackQuery):
 async  def text_information(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
     await  callback.message.answer("Вы выбрали получить информационный текс ")
-    await  callback.message.answer(f"Здравствуйте пользователь\n"
-                                   f"тут находится простая информация для "
-                                   f"интереса пользователей\n"
-                                   f"разработчик этого бота и мой господи Reksi_D\n"
-                                   f"он очень много вложи силы и время на "
-                                   f"мою разработку\n"
-                                   f"так что приятно что вы используйте "
-                                   f"меня для благой цели.\n"
-                                   f" Использование бота простое :\n"
-                                   f" Нажмите  на любую функцию которая вам нужна и "
-                                   f"оправите файл и \n"
-                                   f"получите что хотели.\n"
-                                   f"Если нужно связаться с разработчикам \n"
-                                   f"вот его имя пользователя:@Rexsi_D\n"
-                                   f"Хорошего вам дня. До свидания")
+    await  callback.message.answer(f"Здравствуй пользователь, "
+                                   f"в данном сообщение мой создатель Reksi_D хотел бы показать "
+                                   f"инструкцию по эксплуатации меня. \n"
+                                   f"Он вложил очень много усилий и времени на мою разработку. \n"
+                                   f"Не могу не отметить, что мы крайне признательны за то, что вы "
+                                   f"используете именно нас. "
+                                   f"Теперь же, как мною пользоваться: \n"
+                                   f"1.Нажмите на кнопку с задачей.\n"
+                                   f"2. Отправьте Microsoft Excel файл.\n"
+                                   f"3.Наслаждайтесь отсортированной для вас информацией!\n"
+                                   f"Если у вас возникли какие либо вопросы или вы нашли ошибку, просьба немедленно "
+                                   f"связаться с создателем в телеграмме:@Rexsi_D \n"
+                                   f"Отличного дня!")
 @router.callback_query(F.data == 'what work bot')
 async def video_what_work_bot(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
     await  callback.message.answer("Вы выбрали как работает бот")
-    video = FSInputFile('Files\\Myfiles\\1.mp4')
+    video = FSInputFile('Files\\Myfiles\\Video_help.mp4')
     await callback.message.answer_video(video)
 
 @router.callback_query(F.data == 'what connect developer')
 async def video_what_connect_developer(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
     await  callback.message.answer("Вы выбрали как найти разработчика ")
-    video = FSInputFile('Files\\Myfiles\\1.mp4')
+    video = FSInputFile('Files\\Myfiles\\me_telegram.mp4')
     await callback.message.answer_video(video)
 
 @router.callback_query(F.data == 'homework_teacher')
