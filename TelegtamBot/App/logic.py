@@ -49,7 +49,7 @@ def search_verified_homework(file,search_text_data):
 
         for row in range(3, worksheet.max_row):
             if col_data == 0 or col_teacher == 0 and len(col_arguments) == 0:
-                text = "Таких данных нет  в документе "
+                text = "Таких данных нет в документе "
                 list_text.append(text)
                 return list_text
             else:
@@ -99,7 +99,7 @@ def search_issued_homework(file,search_text_data):
 
         for row in range(3, worksheet.max_row):
             if col_data == 0 or col_teacher == 0 and len(col_arguments) == 0:
-                text = "Таких данных нет  в документе "
+                text = "Таких данных нет в документе "
                 list_text.append(text)
                 return list_text
             else:
@@ -149,7 +149,7 @@ def search_average_rating_grop(file ):
             worksheet_row_col_procent_teacher = int(list_procent[len_list].strip("%"))
             worksheet_row_col_procent_teacher_finall = int(list_procent[len(list_procent) - 1])
             if worksheet_row_col_procent_teacher < worksheet_row_col_procent_teacher_finall:
-                text = (f"""Добрый день {worksheet_row_col_fio_teacher}!У вас плохая посещаемость предмета на вашей паре.Вот такая {worksheet_row_col_procent_teacher}%.""")
+                text = f"""Добрый день {worksheet_row_col_fio_teacher}!У вас плохая посещаемость предмета на вашей паре.Вот такая {worksheet_row_col_procent_teacher}%."""
                 list_text.append(text)
             else:
                 text = "Ок"
@@ -206,7 +206,7 @@ def search_student_assessment(file):
             else:
                 continue
         else:
-            text = "Таких данных нет  в документе "
+            text = "Таких данных нет в документе "
             list_text.append(text)
             return list_text
 
@@ -241,7 +241,7 @@ def search_percentage_of_homework_per_month(file):
                 f"""Студент:{worksheet_row_col_name_student}-{worksheet_row_col_grop} и процент дз:{worksheet_row_col_homework}%.""")
                 list_text.append(text)
         else:
-            text = "Таких данных нет  в документе "
+            text = "Таких данных нет в документе "
             list_text.append(text)
             return list_text
 

@@ -25,7 +25,7 @@ async def hellp(message: Message):
 @router.callback_query(F.data == 'video_help')
 async def video_helps(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
-    await  callback.message.answer("Вы выбрали видео помощи с ботам ")
+    await  callback.message.answer("Вы выбрали видео помощи с ботам")
     await  callback.message.answer("Теперь выберите что хотите получить :\n"
     "Как работа с ботом? или Как связаться с разработчикам",
                                    reply_markup=kb.keyboard_video)
@@ -44,7 +44,7 @@ async  def text_information(callback: CallbackQuery):
 1.Нажмите на кнопку с задачей.\n
 2. Отправьте Microsoft Excel файл.\n
 3.Наслаждайтесь отсортированной для вас информацией!\n
-Если у вас возникли какие либо вопросы или вы нашли ошибку, просьба немедленно "
+Если у вас возникли какие-либо вопросы или вы нашли ошибку, просьба немедленно"
 связаться с создателем в телеграмме:@Rexsi_D \n
 Отличного дня!""")
 @router.callback_query(F.data == 'what work bot')
@@ -66,24 +66,24 @@ async def category_log_homework_teacher(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
     await  callback.message.answer("Вы выбрали посмотреть что с дз у преподавателя")
     await  callback.message.answer("Теперь выберите что хотите получить :\n"
-    "Выданные дз или Проверенные  дз",
+    "Выданные дз или Проверенные дз",
                             reply_markup=kb.keyboard_homework)
 
 @router.callback_query(F.data == 'issued_homework')
 async def category_log_homework_teacher_issued(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
-    await  callback.message.answer("Вы выбрали узначть сколько выданно дз у преподователя")
-    FmsContext.text= "Вы выбрали узнать сколько выданно дз у преподователя"
-    await  callback.message.answer("Теперь выберите что хотите получить :")
-    await  callback.message.answer("За месяц  дз или За неделю дз",reply_markup=kb.keyboard_data)
+    await  callback.message.answer("Вы выбрали узнать сколько выдано дз у преподавателя")
+    FmsContext.text= "Вы выбрали узнать сколько выдано дз у преподавателя"
+    await  callback.message.answer("Теперь выберите что хотите получить:")
+    await  callback.message.answer("За месяц дз или За неделю дз",reply_markup=kb.keyboard_data)
 
 @router.callback_query(F.data == 'verified_homework')
 async def category_log_homework_teacher_verified_homework(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
-    await  callback.message.answer("Вы выбрали узначть сколько провереные  дз у преподователя")
-    FmsContext.text= "Вы выбрали узнать сколько проверенные  дз у преподователя"
-    await  callback.message.answer("Теперь выберите что хотите получить :")
-    await  callback.message.answer("За месяц  дз или За неделю дз",reply_markup=kb.keyboard_data)
+    await  callback.message.answer("Вы выбрали узнать сколько проверенные дз у преподователя")
+    FmsContext.text= "Вы выбрали узнать сколько проверенные дз у преподавателя"
+    await  callback.message.answer("Теперь выберите что хотите получить:")
+    await  callback.message.answer("За месяц дз или За неделю дз",reply_markup=kb.keyboard_data)
 
 @router.callback_query(F.data == 'month')
 async def category_log_homework_teacher_month(callback: CallbackQuery):
@@ -109,22 +109,22 @@ async def category_log_homework_teacher_day(callback: CallbackQuery):
 @router.callback_query(F.data == 'average_rating_grop')
 async def category_log_average_rating_grop(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
-    await  callback.message.answer("Вы выбрали средняя поешаемоть у преподователя")
-    FmsContext.text = "Вы выбрали средняя поешаемоть у преподователя"
+    await  callback.message.answer("Вы выбрали средняя посещаемость у преподавателя")
+    FmsContext.text = "Вы выбрали средняя посещаемость у преподавателя"
     await  callback.message.answer("Оправте файл")
 
 @router.callback_query(F.data == 'student_assessment')
 async def category_log_student_assessment(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
-    await  callback.message.answer("Вы выбрали провереть успеваемоть студентов")
-    FmsContext.text=("Вы выбрали провереть успеваемоть студентов")
+    await  callback.message.answer("Вы выбрали проверить успеваемость студентов")
+    FmsContext.text="Вы выбрали проверить успеваемость студентов"
     await  callback.message.answer("Оправте файл")
 
 @router.callback_query(F.data == 'homework_student')
 async def category_log_student_assessment(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
-    await  callback.message.answer("Вы выбрали провереть успеваемоть студентов")
-    FmsContext.text=("Вы выбрали провереть процент дз у  студентов")
+    await  callback.message.answer("Вы выбрали проверить успеваемость студентов")
+    FmsContext.text="Вы выбрали проверить процент дз у студентов"
     await  callback.message.answer("Оправте файл")
 
 @router.message()
@@ -136,7 +136,7 @@ async def create_file(message: Message):
     if not os.path.isdir(f"Files {message.from_user.id}"):
         os.mkdir(f"Files {message.from_user.id}")
     #os.chdir(f"Files {message.from_user.id}"")
-    if inform_text == "Вы выбрали средняя поешаемоть у преподователя":
+    if inform_text == "Вы выбрали средняя посещаемость у преподавателя":
         new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
             list_text = log.search_average_rating_grop(file=new_file.file_name)
@@ -148,7 +148,7 @@ async def create_file(message: Message):
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
 
-    elif inform_text == "Вы выбрали узнать сколько проверенные  дз у преподователя":
+    elif inform_text == "Вы выбрали узнать сколько проверенные дз у преподавателя":
         new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
             list_text= log.search_verified_homework(new_file,FmsContext.time)
@@ -160,7 +160,7 @@ async def create_file(message: Message):
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
 
-    elif inform_text == "Вы выбрали узнать сколько выданно дз у преподователя":
+    elif inform_text == "Вы выбрали узнать сколько выдано дз у преподавателя":
         new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
             list_text= log.search_issued_homework(new_file,FmsContext.time)
@@ -172,7 +172,7 @@ async def create_file(message: Message):
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
 
-    elif inform_text == 'Вы выбрали провереть успеваемоть студентов':
+    elif inform_text == 'Вы выбрали проверить успеваемость студентов':
         new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
             file = FSInputFile(new_file.file_id, "Infor_file.xlsx")
@@ -185,7 +185,7 @@ async def create_file(message: Message):
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
 
-    elif inform_text == 'Вы выбрали провереть процент дз у  студентов':
+    elif inform_text == 'Вы выбрали проверить процент дз у студентов':
         new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
 

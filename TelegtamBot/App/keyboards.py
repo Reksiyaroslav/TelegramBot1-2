@@ -28,7 +28,7 @@ keyboard_homework = InlineKeyboardMarkup(
     inline_keyboard=
     [
     [InlineKeyboardButton(text="Выданные дз ",callback_data="issued_homework")],
-    [InlineKeyboardButton(text="Проверенные  дз ",callback_data="verified_homework")]
+    [InlineKeyboardButton(text="Проверенные дз ",callback_data="verified_homework")]
     ])
 
 keyboard_video = InlineKeyboardMarkup(
