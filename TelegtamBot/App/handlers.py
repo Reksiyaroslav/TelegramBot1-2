@@ -1,9 +1,9 @@
 from aiogram import Router, F
 from aiogram.types import Message,CallbackQuery
 from aiogram.filters import CommandStart, Command
-from  aiogram.types import FSInputFile,BufferedInputFile
+from  aiogram.types import FSInputFile
 import App.keyboards as kb
-import  App.logic as log
+import App.logic as log
 import  os
 router = Router()
 inform_text = ""
@@ -34,19 +34,19 @@ async def video_helps(callback: CallbackQuery):
 async  def text_information(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
     await  callback.message.answer("Вы выбрали получить информационный текс ")
-    await  callback.message.answer(f"Здравствуй пользователь, "
-                                   f"в данном сообщение мой создатель Reksi_D хотел бы показать "
-                                   f"инструкцию по эксплуатации меня. \n"
-                                   f"Он вложил очень много усилий и времени на мою разработку. \n"
-                                   f"Не могу не отметить, что мы крайне признательны за то, что вы "
-                                   f"используете именно нас. "
-                                   f"Теперь же, как мною пользоваться: \n"
-                                   f"1.Нажмите на кнопку с задачей.\n"
-                                   f"2. Отправьте Microsoft Excel файл.\n"
-                                   f"3.Наслаждайтесь отсортированной для вас информацией!\n"
-                                   f"Если у вас возникли какие либо вопросы или вы нашли ошибку, просьба немедленно "
-                                   f"связаться с создателем в телеграмме:@Rexsi_D \n"
-                                   f"Отличного дня!")
+    await  callback.message.answer("""Здравствуй пользователь, 
+в данном сообщение мой создатель Reksi_D хотел бы показать 
+инструкцию по эксплуатации меня. \n
+Он вложил очень много усилий и времени на мою разработку. \n
+Не могу не отметить, что мы крайне признательны за то, что вы 
+используете именно нас. 
+Теперь же, как мною пользоваться: \n
+1.Нажмите на кнопку с задачей.\n
+2. Отправьте Microsoft Excel файл.\n
+3.Наслаждайтесь отсортированной для вас информацией!\n
+Если у вас возникли какие либо вопросы или вы нашли ошибку, просьба немедленно "
+связаться с создателем в телеграмме:@Rexsi_D \n
+Отличного дня!""")
 @router.callback_query(F.data == 'what work bot')
 async def video_what_work_bot(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
@@ -74,16 +74,16 @@ async def category_log_homework_teacher_issued(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
     await  callback.message.answer("Вы выбрали узначть сколько выданно дз у преподователя")
     FmsContext.text= "Вы выбрали узнать сколько выданно дз у преподователя"
-    await  callback.message.answer("Теперь выберите что хотите получить :\n"
-    "За месяц  дз или За неделю дз",reply_markup=kb.keyboard_data)
+    await  callback.message.answer("Теперь выберите что хотите получить :")
+    await  callback.message.answer("За месяц  дз или За неделю дз",reply_markup=kb.keyboard_data)
 
 @router.callback_query(F.data == 'verified_homework')
 async def category_log_homework_teacher_verified_homework(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
     await  callback.message.answer("Вы выбрали узначть сколько провереные  дз у преподователя")
     FmsContext.text= "Вы выбрали узнать сколько проверенные  дз у преподователя"
-    await  callback.message.answer("Теперь выберите что хотите получить :\n"
-    "За месяц  дз или За неделю дз",reply_markup=kb.keyboard_data)
+    await  callback.message.answer("Теперь выберите что хотите получить :")
+    await  callback.message.answer("За месяц  дз или За неделю дз",reply_markup=kb.keyboard_data)
 
 @router.callback_query(F.data == 'month')
 async def category_log_homework_teacher_month(callback: CallbackQuery):
@@ -130,80 +130,68 @@ async def category_log_student_assessment(callback: CallbackQuery):
 @router.message()
 async def create_file(message: Message):
     inform_text = FmsContext.text
-   #os.chdir(f"Files")
+    if not  os.getcwd().endswith("Files") :
+        os.chdir(f"Files")
     await message.answer("файл получен")
     if not os.path.isdir(f"Files {message.from_user.id}"):
         os.mkdir(f"Files {message.from_user.id}")
     #os.chdir(f"Files {message.from_user.id}"")
-    new_file = message.document
-    file_id = new_file.file_id
     if inform_text == "Вы выбрали средняя поешаемоть у преподователя":
-        tabel_file = open("label_Percentage_е.xlsx","wb+")
+        new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
-
-            list_text = log.search_average_rating_grop(file=file_id)
+            list_text = log.search_average_rating_grop(file=new_file.file_name)
             inform_text = f"{list_text}"
             inform_text = inform_text.replace(',', "\n")
             inform_text = inform_text.strip("[]")
             inform_text = inform_text.strip("'")
-
-
             await  message.answer(inform_text)
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
 
     elif inform_text == "Вы выбрали узнать сколько проверенные  дз у преподователя":
-
+        new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
-
             list_text= log.search_verified_homework(new_file,FmsContext.time)
             inform_text = f"{list_text}"
             inform_text = inform_text.replace(',', "\n")
             inform_text = inform_text.strip("[]")
             inform_text = inform_text.strip("'")
-
             await  message.answer(inform_text)
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
 
     elif inform_text == "Вы выбрали узнать сколько выданно дз у преподователя":
-
+        new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
-
             list_text= log.search_issued_homework(new_file,FmsContext.time)
             inform_text = f"{list_text}"
             inform_text = inform_text.replace(',',"\n")
             inform_text = inform_text.strip("[]")
             inform_text = inform_text.strip("'")
-
             await  message.answer(inform_text)
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
 
     elif inform_text == 'Вы выбрали провереть успеваемоть студентов':
-
+        new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
-
             file = FSInputFile(new_file.file_id, "Infor_file.xlsx")
             list_text= log.search_student_assessment(file.filename)
             inform_text = f"{list_text}"
             inform_text = inform_text.replace(',', "\n")
             inform_text = inform_text.strip("[]")
             inform_text = inform_text.strip("'")
-
             await  message.answer(inform_text)
-
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
 
     elif inform_text == 'Вы выбрали провереть процент дз у  студентов':
-
+        new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
 
             list_text_1 = []
             file = FSInputFile(new_file.file_id, "Infor_file.xlsx")
             list_text= log.search_percentage_of_homework_per_month(file.filename)
-
             if len(list_text) <50:
                 list_text = log.search_issued_homework(new_file, FmsContext.time)
                 inform_text = f"{list_text}"
@@ -211,9 +199,7 @@ async def create_file(message: Message):
                 inform_text = inform_text.strip("[]")
                 inform_text = inform_text.strip("'")
                 await  message.answer(inform_text)
-
             elif len(list_text) >50 and  len(list_text) <100:
-
                 for list_len in range(0,int(len(list_text)/2)):
                     list_text_1.append(list_text[list_len])
                 inform_text = f"{list_text_1}"
@@ -229,7 +215,6 @@ async def create_file(message: Message):
                 inform_text = inform_text.strip("[]")
                 inform_text = inform_text.strip("'")
                 await  message.answer(inform_text)
-
         else:
             await  message.answer(f"Не соответствует ожидаемому формату.")
 
