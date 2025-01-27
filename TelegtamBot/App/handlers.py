@@ -47,6 +47,7 @@ async  def text_information(callback: CallbackQuery):
 Если у вас возникли какие-либо вопросы или вы нашли ошибку, просьба немедленно"
 связаться с создателем в телеграмме:@Rexsi_D \n
 Отличного дня!""")
+
 @router.callback_query(F.data == 'what work bot')
 async def video_what_work_bot(callback: CallbackQuery):
     await  callback.answer("Вы выбрали функцию")
@@ -136,6 +137,7 @@ async def create_file(message: Message):
     if not os.path.isdir(f"Files {message.from_user.id}"):
         os.mkdir(f"Files {message.from_user.id}")
     #os.chdir(f"Files {message.from_user.id}"")
+
     if inform_text == "Вы выбрали средняя посещаемость у преподавателя":
         new_file = message.document
         if new_file.file_name.endswith(".xlsx"):

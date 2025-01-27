@@ -1,6 +1,6 @@
 import openpyxl
 
-def Percentage_of_Dz_Verified(number_verified, number_plann):
+def percentage_of_dz_verified(number_verified, number_plann):
     number_average_score: float = (number_verified /number_plann)*100
 
     number_average_score_lod = (number_average_score * 10) % 10
@@ -56,8 +56,8 @@ def search_verified_homework(file,search_text_data):
                 worksheet_row_col_fio_teacher = worksheet[row][col_teacher].value
                 worksheet_row_col_relet_1 = int(worksheet[row][col_arguments[0]].value)
                 worksheet_row_col_relet_2 = int(worksheet[row][col_arguments[1]].value)
-                if Percentage_of_Dz_Verified(worksheet_row_col_relet_1, worksheet_row_col_relet_2) < 75:
-                    text = f"""Добрый день - {worksheet_row_col_fio_teacher}. У вас не выполнена норма по проверке ДЗ студентов. Нужно исправить это.У вас такой процент проверки ДЗ: {Percentage_of_Dz_Verified(worksheet_row_col_relet_1, worksheet_row_col_relet_2)}%."""
+                if percentage_of_dz_verified(worksheet_row_col_relet_1, worksheet_row_col_relet_2) < 75:
+                    text = f"""Добрый день - {worksheet_row_col_fio_teacher}. У вас не выполнена норма по проверке ДЗ студентов. Нужно исправить это.У вас такой процент проверки ДЗ: {percentage_of_dz_verified(worksheet_row_col_relet_1, worksheet_row_col_relet_2)}%."""
                     list_text.append(text)
                 else:
                     text = "ок"
@@ -106,9 +106,9 @@ def search_issued_homework(file,search_text_data):
                 worksheet_row_col_fio_teacher = worksheet[row][col_teacher].value
                 worksheet_row_col_homework_issued = int(worksheet[row][col_arguments[0]].value)
                 worksheet_row_col_plan = int(worksheet[row][col_arguments[1]].value)
-                if (Percentage_of_Dz_Verified(worksheet_row_col_homework_issued,
+                if (percentage_of_dz_verified(worksheet_row_col_homework_issued,
                                               worksheet_row_col_plan) < 70):
-                    text = f"""Добрый день - {worksheet_row_col_fio_teacher}. У вас не выполнена норма по выдачи ДЗ студентов.Нужно исправить это.У вас такой процент выданных ДЗ: {Percentage_of_Dz_Verified(worksheet_row_col_homework_issued, worksheet_row_col_plan)}%."""
+                    text = f"""Добрый день - {worksheet_row_col_fio_teacher}. У вас не выполнена норма по выдачи ДЗ студентов.Нужно исправить это.У вас такой процент выданных ДЗ: {percentage_of_dz_verified(worksheet_row_col_homework_issued, worksheet_row_col_plan)}%."""
                     list_text.append(text)
                 else:
                     text = "ок"
@@ -162,7 +162,7 @@ def search_average_rating_grop(file ):
     print(list_text)
     return list_text
 
-def Average_score(number_homework,number_classwork ):
+def average_score(number_homework,number_classwork ):
         number_average_score:float = (number_homework+number_classwork)/2
         number_average_score_lod = (number_average_score * 10)%10
         if int(number_average_score_lod) >= 5.0:
@@ -200,7 +200,7 @@ def search_student_assessment(file):
             worksheet_row_col_homework = int(worksheet[row][col_assessment[0]].value)
             worksheet_row_col_classroom = int(worksheet[row][col_assessment[1]].value)
             if (worksheet_row_col_homework < 3 or worksheet_row_col_classroom < 3
-                    or Average_score(worksheet_row_col_homework, worksheet_row_col_classroom) < 3):
+                    or average_score(worksheet_row_col_homework, worksheet_row_col_classroom) < 3):
                 text = f"""Cтудент:{worksheet_row_col_name_student} - {worksheet_row_col_grop} Дз- {worksheet_row_col_homework} или КЛ_Р- {worksheet_row_col_classroom}.Как поступить в данной ситуации?"""
                 list_text.append(text)
             else:
