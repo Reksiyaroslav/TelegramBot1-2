@@ -1,99 +1,73 @@
 import openpyxl
 
-
-
-
-def search_type_sq(file):
-        list_search = ["Тема","Урок"]
-        itor_text = []
-
-        worbook = openpyxl.open("File\\Отчетпотемамзанятий.xlsx")
-        worksheet = worbook.active
-        col_subject = 0
-        col_teacher  = 0
-        for row in range(1, worksheet.max_row):
-            for col in range(0,worksheet.max_column):
-               if worksheet[row][col].value == "Тема урока":
-                    col_subject = col
-                    print(col_subject)
-
-                    break
-               elif worksheet[row][col].value == "ФИО преподавателя":
-                   col_teacher = col
-                   print(col_teacher)
-               else:
-                    "Темы нет в это файле "
-                    continue
-
-        for row in range(2,worksheet.max_row):
-            if ((worksheet[row][col_subject].value in (list_search[0].title())
-                    or worksheet[row][col_subject].value in (list_search[0].upper()))and 
-                    (worksheet[row][col_subject].value in (list_search[1].title())
-                    or  worksheet[row][col_subject].value in (list_search[1].upper()))):
-                print(f"{worksheet[row][col_subject].value}\n")
-                continue
-            else:
-                text = worksheet[row][col_subject].value
-
-                itor_text.append(text)
-                print(f"{itor_text}\t")
-        worbook.close()
-        return itor_text
-
-
-def Percentage_of_Dz_Verified(number_verified, number_plann):
+def percentage_of_dz_verified(number_verified, number_plann):
     number_average_score: float = (number_verified /number_plann)*100
+
     number_average_score_lod = (number_average_score * 10) % 10
+
     if int(number_average_score_lod) >= 5.0:
+
         return int(number_average_score + 1)
+
     else:
+
         return int(number_average_score)
+
 def search_verified_homework(file,search_text_data):
         list_text = []
         list_search =["Проверено","План"]
-        worbook = openpyxl.open("File\\Отчет по домашним заданиям.xlsx")
+        worbook = openpyxl.open("Отчет по домашним заданиям.xlsx")
         worksheet = worbook.active
         col_data = 0
         col_teacher= 0
         col_arguments = []
+
         for row in range(1, worksheet.max_row):
             for col in range(0,worksheet.max_column):
                if worksheet[row][col].value == search_text_data:
+
                     col_data = col
+
                     print(col_data)
+
                elif worksheet[row][col].value == "ФИО преподавателя":
+
                    col_teacher = col
+
                    print(col_teacher)
 
-               else:
-                    "Темы нет в это файле "
-                    continue
         for row in range(1, worksheet.max_row):
             for col in range(col_data, worksheet.max_column):
                 if (worksheet[row][col].value == list_search[0]
                     or worksheet[row][col].value == list_search[1]) :
-                    col_arguments.append( col)
+
+                    col_arguments.append(col)
                     print(col_arguments)
+
                 elif(len(col_arguments)==2):
                     break
+
         for row in range(3, worksheet.max_row):
-            if(Percentage_of_Dz_Verified(int(worksheet[row][col_arguments[0]].value),
-                                         int(worksheet[row][col_arguments[1]].value))<75):
-                text = f"Добрый время суток {worksheet[row][col_teacher].value} у вас не выполняна норма по проверке дз у студентах нужн что это делать  у вас токой {Percentage_of_Dz_Verified(int(worksheet[row][col_arguments[0]].value),
-                                         int(worksheet[row][col_arguments[1]].value))}%"
+            if col_data == 0 or col_teacher == 0 and len(col_arguments) == 0:
+                text = "Таких данных нет в документе "
                 list_text.append(text)
+                return list_text
             else:
-                text = "ок"
-
-
-
-
+                worksheet_row_col_fio_teacher = worksheet[row][col_teacher].value
+                worksheet_row_col_relet_1 = int(worksheet[row][col_arguments[0]].value)
+                worksheet_row_col_relet_2 = int(worksheet[row][col_arguments[1]].value)
+                if percentage_of_dz_verified(worksheet_row_col_relet_1, worksheet_row_col_relet_2) < 75:
+                    text = f"""Добрый день - {worksheet_row_col_fio_teacher}. У Вас не выполнена норма по проверке ДЗ студентов. Нужно исправить это.У Вас  процент проверки ДЗ: {percentage_of_dz_verified(worksheet_row_col_relet_1, worksheet_row_col_relet_2)}%."""
+                    list_text.append(text)
+                else:
+                    text = "ок"
         worbook.close()
         return list_text
+
 def search_issued_homework(file,search_text_data):
         list_text = []
         list_search =["Выдано","План"]
-        worbook = openpyxl.open("File\\Отчет по домашним заданиям.xlsx")
+        worbook = openpyxl.open("Отчет по домашним заданиям.xlsx")
         worksheet = worbook.active
         col_data = 0
         col_teacher= 0
@@ -101,44 +75,56 @@ def search_issued_homework(file,search_text_data):
         for row in range(1, worksheet.max_row):
             for col in range(0,worksheet.max_column):
                if worksheet[row][col].value == search_text_data:
+
                     col_data = col
+
                     print(col_data)
                elif worksheet[row][col].value == "ФИО преподавателя":
+
                    col_teacher = col
+
                    print(col_teacher)
 
-               else:
-                    "Темы нет в это файле "
-                    continue
         for row in range(1, worksheet.max_row):
             for col in range(col_data, worksheet.max_column):
+
                 if (worksheet[row][col].value == list_search[0]
                     or worksheet[row][col].value == list_search[1]) :
+
                     col_arguments.append( col)
                     print(col_arguments)
+
                 elif(len(col_arguments)==2):
                     break
+
         for row in range(3, worksheet.max_row):
-            if(Percentage_of_Dz_Verified(int(worksheet[row][col_arguments[0]].value),
-                                         int(worksheet[row][col_arguments[1]].value))<75):
-                text = f"Добрый время суток {worksheet[row][col_teacher].value} у вас не выполняна норма по проверке дз у студентах нужн что это делать  у вас токой {Percentage_of_Dz_Verified(int(worksheet[row][col_arguments[0]].value),
-                                         int(worksheet[row][col_arguments[1]].value))}%"
+            if col_data == 0 or col_teacher == 0 and len(col_arguments) == 0:
+                text = "Таких данных нет в документе "
                 list_text.append(text)
+                return list_text
             else:
-                text = "ок"
-
-
-
+                worksheet_row_col_fio_teacher = worksheet[row][col_teacher].value
+                worksheet_row_col_homework_issued = int(worksheet[row][col_arguments[0]].value)
+                worksheet_row_col_plan = int(worksheet[row][col_arguments[1]].value)
+                if (percentage_of_dz_verified(worksheet_row_col_homework_issued,
+                                              worksheet_row_col_plan) < 70):
+                    text = f"""Добрый день - {worksheet_row_col_fio_teacher}. У Вас не выполнена норма по выдачи ДЗ студентов.Нужно исправить это.У Вас  процент выданных ДЗ: {percentage_of_dz_verified(worksheet_row_col_homework_issued, worksheet_row_col_plan)}%."""
+                    list_text.append(text)
+                else:
+                    text = "ок"
 
         worbook.close()
         return list_text
+
 def search_average_rating_grop(file ):
     text = ""
     list_text = []
     list_procent= []
     list_teacher= []
-    worbook = openpyxl.open("File\\Отчетпопосещаемостистудентов.xlsx")
+
+    worbook = openpyxl.open("Отчетпопосещаемостистудентов.xlsx")
     worksheet = worbook.active
+
     col_percent = 0
     col_teacher= 0
     for row in range(1, worksheet.max_row):
@@ -147,51 +133,50 @@ def search_average_rating_grop(file ):
             if worksheet[row][col].value == "Средняя посещаемость":
                 col_percent = col
                 print(col_percent)
-
                 break
+
             elif worksheet[row][col].value == "ФИО преподавателя":
                 col_teacher = col
                 print(col_teacher)
-            else:
-                inform_text = "Темы нет в это файле "
-                continue
-    for row in range(3,worksheet.max_row+1):
 
+    for row in range(3,worksheet.max_row+1):
         list_procent.append(worksheet[row][col_percent].value)
         list_teacher.append(worksheet[row][col_teacher].value)
 
     for len_list in range(len(list_procent)-1):
-        if int(list_procent[len_list].strip("%")) < int(list_procent[len(list_procent)-1]):
-            text = (
-                f"Добрый день {list_teacher[len_list]}! "
-                f"У вас плохая посещаемость предмета на ваши пары. "
-                f"Вот такая {list_procent[len_list]}.")
-            print(text)
-            list_text.append(text)
-
+        if col_percent != 0 and col_teacher == 0:
+            worksheet_row_col_fio_teacher = list_teacher[len_list]
+            worksheet_row_col_procent_teacher = int(list_procent[len_list].strip("%"))
+            worksheet_row_col_procent_teacher_finall = int(list_procent[len(list_procent) - 1])
+            if worksheet_row_col_procent_teacher < worksheet_row_col_procent_teacher_finall:
+                text = f"""Добрый день {worksheet_row_col_fio_teacher}!У вас плохая посещаемость предмета на вашей паре.Вот  {worksheet_row_col_procent_teacher}%."""
+                list_text.append(text)
+            else:
+                text = "Ок"
         else:
-            text = "Ок"
+            text = "Таких данных нет в документе "
+            list_text.append(text)
+            return list_text
+
     worbook.close()
     print(list_text)
     return list_text
 
-def Average_score(number_homework,number_classwork ):
+def average_score(number_homework,number_classwork ):
         number_average_score:float = (number_homework+number_classwork)/2
         number_average_score_lod = (number_average_score * 10)%10
         if int(number_average_score_lod) >= 5.0:
             return int(number_average_score+1)
         else:
             return int(number_average_score)
+
 def search_student_assessment(file):
-
-
     list_text = []
     list_search = ["FIO","Группа","Classroom","Homework","Average score","Exam"]
     col_fio = 0
     col_group = 0
     col_assessment = []
-
-    worbook = openpyxl.open("File\\Отчетпостудентам.xlsx")
+    worbook = openpyxl.open("Отчетпостудентам.xlsx")
     worksheet = worbook.active
     for row in range(1, worksheet.max_row):
         for col in range(0, worksheet.max_column):
@@ -199,8 +184,6 @@ def search_student_assessment(file):
             if worksheet[row][col].value == list_search[0]:
                 col_fio = col
                 print(col_fio)
-
-
             elif worksheet[row][col].value == list_search[1]:
                 col_group = col
                 print(col_group)
@@ -209,18 +192,59 @@ def search_student_assessment(file):
                   (worksheet[row][col].value == list_search[4])):
                 col_assessment.append(col)
                 print(col_assessment)
-            else:
-                inform_text = "ДЗ,Классаня работа или Экзамен нет файле"
-                continue
 
     for row in range(2, worksheet.max_row):
-        if (int(worksheet[row][col_assessment[0]].value) < 3 or int(worksheet[row][col_assessment[1]].value < 3)
-                or Average_score(int(worksheet[row][col_assessment[0]].value),int(worksheet[row][col_assessment[1]].value)) <3):
-            text = f"Cтудент:{worksheet[row][col_fio].value},{worksheet[row][col_group].value} Дз-{worksheet[row][col_assessment[0]].value } или КЛ_Р-{ worksheet[row][col_assessment[1]].value}.Как поступить в данной ситуации?"
-            list_text.append(text)
+        if col_fio == 0 and col_group != 0  and  len(col_assessment) != 0:
+            worksheet_row_col_name_student = worksheet[row][col_fio].value
+            worksheet_row_col_grop = worksheet[row][col_group].value
+            worksheet_row_col_homework = int(worksheet[row][col_assessment[0]].value)
+            worksheet_row_col_classroom = int(worksheet[row][col_assessment[1]].value)
+            if (worksheet_row_col_homework < 3 or worksheet_row_col_classroom < 3
+                    or average_score(worksheet_row_col_homework, worksheet_row_col_classroom) < 3):
+                text = f"""Cтудент:{worksheet_row_col_name_student} - {worksheet_row_col_grop} Дз- {worksheet_row_col_homework} или КЛ_Р- {worksheet_row_col_classroom}.Как поступить в данной ситуации?"""
+                list_text.append(text)
+            else:
+                continue
         else:
-            continue
+            text = "Таких данных нет в документе "
+            list_text.append(text)
+            return list_text
 
     worbook.close()
-    print(list_text)
+    return list_text
+
+def search_percentage_of_homework_per_month(file):
+    list_text = []
+    list_search = ["FIO","Группа","Percentage Homework"]
+    col_assessment = []
+    worbook = openpyxl.open("Отчет по дз (6 задание) .xlsx")
+    worksheet = worbook.active
+    for row in range(1, worksheet.max_row):
+        for col in range(0, worksheet.max_column):
+            if worksheet[row][col].value == list_search[0]:
+                col_assessment.append(col)
+            elif worksheet[row][col].value == list_search[1]:
+                col_assessment.append(col)
+            elif worksheet[row][col].value == list_search[2]:
+                col_assessment.append(col)
+                break
+    print(col_assessment)
+
+    for row in range(2, worksheet.max_row):
+        if len(col_assessment) != 0:
+            worksheet_row_col_name_student = worksheet[row][col_assessment[0]].value
+            worksheet_row_col_grop = worksheet[row][col_assessment[1]].value
+            worksheet_row_col_homework = int(worksheet[row][col_assessment[2]].value)
+            print(f"{worksheet_row_col_homework}")
+            if worksheet_row_col_homework < 50:
+                text = (
+                f"""Студент:{worksheet_row_col_name_student}-{worksheet_row_col_grop} и процент дз:{worksheet_row_col_homework}%.""")
+                list_text.append(text)
+        else:
+            text = "Таких данных нет в документе "
+            list_text.append(text)
+            return list_text
+
+    print(len(list_text))
+    worbook.close()
     return list_text
