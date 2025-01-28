@@ -57,7 +57,7 @@ def search_verified_homework(file,search_text_data):
                 worksheet_row_col_relet_1 = int(worksheet[row][col_arguments[0]].value)
                 worksheet_row_col_relet_2 = int(worksheet[row][col_arguments[1]].value)
                 if percentage_of_dz_verified(worksheet_row_col_relet_1, worksheet_row_col_relet_2) < 75:
-                    text = f"""Добрый день - {worksheet_row_col_fio_teacher}. У вас не выполнена норма по проверке ДЗ студентов. Нужно исправить это.У вас такой процент проверки ДЗ: {percentage_of_dz_verified(worksheet_row_col_relet_1, worksheet_row_col_relet_2)}%."""
+                    text = f"""Добрый день - {worksheet_row_col_fio_teacher}. У Вас не выполнена норма по проверке ДЗ студентов. Нужно исправить это.У Вас  процент проверки ДЗ: {percentage_of_dz_verified(worksheet_row_col_relet_1, worksheet_row_col_relet_2)}%."""
                     list_text.append(text)
                 else:
                     text = "ок"
@@ -108,7 +108,7 @@ def search_issued_homework(file,search_text_data):
                 worksheet_row_col_plan = int(worksheet[row][col_arguments[1]].value)
                 if (percentage_of_dz_verified(worksheet_row_col_homework_issued,
                                               worksheet_row_col_plan) < 70):
-                    text = f"""Добрый день - {worksheet_row_col_fio_teacher}. У вас не выполнена норма по выдачи ДЗ студентов.Нужно исправить это.У вас такой процент выданных ДЗ: {percentage_of_dz_verified(worksheet_row_col_homework_issued, worksheet_row_col_plan)}%."""
+                    text = f"""Добрый день - {worksheet_row_col_fio_teacher}. У Вас не выполнена норма по выдачи ДЗ студентов.Нужно исправить это.У Вас  процент выданных ДЗ: {percentage_of_dz_verified(worksheet_row_col_homework_issued, worksheet_row_col_plan)}%."""
                     list_text.append(text)
                 else:
                     text = "ок"
@@ -149,12 +149,12 @@ def search_average_rating_grop(file ):
             worksheet_row_col_procent_teacher = int(list_procent[len_list].strip("%"))
             worksheet_row_col_procent_teacher_finall = int(list_procent[len(list_procent) - 1])
             if worksheet_row_col_procent_teacher < worksheet_row_col_procent_teacher_finall:
-                text = f"""Добрый день {worksheet_row_col_fio_teacher}!У вас плохая посещаемость предмета на вашей паре.Вот такая {worksheet_row_col_procent_teacher}%."""
+                text = f"""Добрый день {worksheet_row_col_fio_teacher}!У вас плохая посещаемость предмета на вашей паре.Вот  {worksheet_row_col_procent_teacher}%."""
                 list_text.append(text)
             else:
                 text = "Ок"
         else:
-            text = "Таких данных нет  в документе "
+            text = "Таких данных нет в документе "
             list_text.append(text)
             return list_text
 

@@ -14,7 +14,7 @@ class FmsContext():
 
 @router.message(CommandStart())
 async def cmd_start(message: Message):
-    await  message.answer("Здравствуйте выбирайте функцию которую вам нужно",
+    await  message.answer("Здравствуйте выберете функцию которую вам нужно",
                           reply_markup=kb.keyboard_main)
 
 @router.message(Command("help"))
@@ -44,7 +44,7 @@ async  def text_information(callback: CallbackQuery):
 1.Нажмите на кнопку с задачей.\n
 2. Отправьте Microsoft Excel файл.\n
 3.Наслаждайтесь отсортированной для вас информацией!\n
-Если у вас возникли какие-либо вопросы или вы нашли ошибку, просьба немедленно"
+Если у вас возникли какие-либо вопросы или вы нашли ошибку, просьба"
 связаться с создателем в телеграмме:@Rexsi_D \n
 Отличного дня!""")
 
