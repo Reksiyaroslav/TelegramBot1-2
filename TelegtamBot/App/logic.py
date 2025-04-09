@@ -13,7 +13,13 @@ def percentage_of_dz_verified(number_verified, number_plann):
 
         return int(number_average_score)
 
-def search_verified_homework(file,search_text_data):
+def provert_list_(list_tet):
+    if  len(list_tet) == 3:
+        match list_tet[0]:
+            case "FIO":
+                return ""
+ 
+def search_List_text(file,search_text_data):
         list_text = []
         list_search =["Проверено","План"]
         worbook = openpyxl.open("Отчет по домашним заданиям.xlsx")
@@ -162,13 +168,7 @@ def search_average_rating_grop(file ):
     print(list_text)
     return list_text
 
-def average_score(number_homework,number_classwork ):
-        number_average_score:float = (number_homework+number_classwork)/2
-        number_average_score_lod = (number_average_score * 10)%10
-        if int(number_average_score_lod) >= 5.0:
-            return int(number_average_score+1)
-        else:
-            return int(number_average_score)
+
 
 def search_student_assessment(file):
     list_text = []
@@ -200,7 +200,7 @@ def search_student_assessment(file):
             worksheet_row_col_homework = int(worksheet[row][col_assessment[0]].value)
             worksheet_row_col_classroom = int(worksheet[row][col_assessment[1]].value)
             if (worksheet_row_col_homework < 3 or worksheet_row_col_classroom < 3
-                    or average_score(worksheet_row_col_homework, worksheet_row_col_classroom) < 3):
+                    or (worksheet_row_col_homework, worksheet_row_col_classroom) < 3):
                 text = f"""Cтудент:{worksheet_row_col_name_student} - {worksheet_row_col_grop} Дз- {worksheet_row_col_homework} или КЛ_Р- {worksheet_row_col_classroom}.Как поступить в данной ситуации?"""
                 list_text.append(text)
             else:

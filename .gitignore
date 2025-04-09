@@ -1,0 +1,6 @@
+config.toml
+.venv
+__pycache__
+.log
+.json
+.idea
