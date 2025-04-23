@@ -1,6 +1,14 @@
 import openpyxl
 
-def percentage_of_dz_verified(number_verified, number_plann):
+
+#Назавние таблиц 
+list_tabels =["Отчет по домашним заданиям.xlsx"
+            ,"Отчетпопосещаемостистудентов.xlsx"
+              ,"Отчетпостудентам.xlsx"
+              ,"Отчет по дз (6 задание) .xlsx"]
+list_oret_nuber  =[]
+# нахождени процента 
+def percentage(number_verified, number_plann):
     number_average_score: float = (number_verified /number_plann)*100
 
     number_average_score_lod = (number_average_score * 10) % 10
@@ -12,117 +20,211 @@ def percentage_of_dz_verified(number_verified, number_plann):
     else:
 
         return int(number_average_score)
+# понть какую таблицу окрыть 
+def open_tabel(relut:str,list_search)->str:
+    if relut in ("mouth spand" ,"day spand" , "week spand"):
+        return list_search[0]
+    elif relut=="percentage_group_tectecr":
+        return list_search[1]
+    elif relut =="percentage_of_homework_per_mont":
+        return list_search[3]
+    elif relut =="student_assessment":
+        return list_search[2]
+# Нахождени листа кторый пришёл на результат 
+def provert_list(list_text:list)->str:
+    len_list_seract = len(list_text)
+    match len_list_seract:
 
-def provert_list_(list_tet):
-    if  len(list_tet) == 3:
-        match list_tet[0]:
-            case "FIO":
-                return ""
- 
-def search_List_text(file,search_text_data):
+        case  4:
+            for i in range(len_list_seract):
+                match list_text[i]:
+                    case "Месяц":
+                        return "mouth spand"
+                    case "Неделя":
+                        return "week spand"
+                    case "День":
+                        return "day spand"            
+        case 3: 
+
+            return "percentage_of_homework_per_mont"
+        
+        case 2:
+
+            return "percentage_group_tectecr"
+        
+        case 6:
+
+            return "student_assessment"
+
+#Функци поиска по листу  
+def search_List_text(file,list_search:list):
         list_text = []
-        list_search =["Проверено","План"]
-        worbook = openpyxl.open("Отчет по домашним заданиям.xlsx")
-        worksheet = worbook.active
-        col_data = 0
-        col_teacher= 0
+
+        print(f"{type(list_search)}")
+        print(list_search)
+        relut =  provert_list(list_search)
+
+        print(relut)
+
+      
         col_arguments = []
 
-        for row in range(1, worksheet.max_row):
-            for col in range(0,worksheet.max_column):
-               if worksheet[row][col].value == search_text_data:
+        relut_tabel = open_tabel(relut,list_tabels)
 
-                    col_data = col
+        print(relut_tabel)
 
-                    print(col_data)
+        
+        print(f"{type(relut_tabel)}")
 
-               elif worksheet[row][col].value == "ФИО преподавателя":
+        worbook = openpyxl.open(relut_tabel)
 
-                   col_teacher = col
-
-                   print(col_teacher)
-
-        for row in range(1, worksheet.max_row):
-            for col in range(col_data, worksheet.max_column):
-                if (worksheet[row][col].value == list_search[0]
-                    or worksheet[row][col].value == list_search[1]) :
-
-                    col_arguments.append(col)
-                    print(col_arguments)
-
-                elif(len(col_arguments)==2):
-                    break
-
-        for row in range(3, worksheet.max_row):
-            if col_data == 0 or col_teacher == 0 and len(col_arguments) == 0:
-                text = "Таких данных нет в документе "
-                list_text.append(text)
-                return list_text
-            else:
-                worksheet_row_col_fio_teacher = worksheet[row][col_teacher].value
-                worksheet_row_col_relet_1 = int(worksheet[row][col_arguments[0]].value)
-                worksheet_row_col_relet_2 = int(worksheet[row][col_arguments[1]].value)
-                if percentage_of_dz_verified(worksheet_row_col_relet_1, worksheet_row_col_relet_2) < 75:
-                    text = f"""Добрый день - {worksheet_row_col_fio_teacher}. У Вас не выполнена норма по проверке ДЗ студентов. Нужно исправить это.У Вас  процент проверки ДЗ: {percentage_of_dz_verified(worksheet_row_col_relet_1, worksheet_row_col_relet_2)}%."""
-                    list_text.append(text)
-                else:
-                    text = "ок"
-        worbook.close()
-        return list_text
-
-def search_issued_homework(file,search_text_data):
-        list_text = []
-        list_search =["Выдано","План"]
-        worbook = openpyxl.open("Отчет по домашним заданиям.xlsx")
         worksheet = worbook.active
-        col_data = 0
-        col_teacher= 0
-        col_arguments = []
+        print(worksheet.max_row)
+        
+        # Поиск аргументов 
         for row in range(1, worksheet.max_row):
+
             for col in range(0,worksheet.max_column):
-               if worksheet[row][col].value == search_text_data:
 
-                    col_data = col
+                if relut in("mouth spand " ,"day spand" "week spand"):
 
-                    print(col_data)
-               elif worksheet[row][col].value == "ФИО преподавателя":
+                    if worksheet[row][col].value == list_search[0]:
 
-                   col_teacher = col
+                        col_arguments.insert(0,col)
 
-                   print(col_teacher)
+                            
 
-        for row in range(1, worksheet.max_row):
-            for col in range(col_data, worksheet.max_column):
+                    elif worksheet[row][col].value == list_search[3]:
+                    
 
-                if (worksheet[row][col].value == list_search[0]
-                    or worksheet[row][col].value == list_search[1]) :
+                        col_arguments.append(col)
+                   
+                    elif (worksheet[row][col].value == list_search[1]
+                        or worksheet[row][col].value == list_search[2]) :
 
-                    col_arguments.append( col)
-                    print(col_arguments)
+                        col_arguments.append(col)
+                        
 
-                elif(len(col_arguments)==2):
-                    break
+                    elif(len(col_arguments)==4):
 
-        for row in range(3, worksheet.max_row):
-            if col_data == 0 or col_teacher == 0 and len(col_arguments) == 0:
-                text = "Таких данных нет в документе "
-                list_text.append(text)
-                return list_text
-            else:
-                worksheet_row_col_fio_teacher = worksheet[row][col_teacher].value
-                worksheet_row_col_homework_issued = int(worksheet[row][col_arguments[0]].value)
-                worksheet_row_col_plan = int(worksheet[row][col_arguments[1]].value)
-                if (percentage_of_dz_verified(worksheet_row_col_homework_issued,
-                                              worksheet_row_col_plan) < 70):
-                    text = f"""Добрый день - {worksheet_row_col_fio_teacher}. У Вас не выполнена норма по выдачи ДЗ студентов.Нужно исправить это.У Вас  процент выданных ДЗ: {percentage_of_dz_verified(worksheet_row_col_homework_issued, worksheet_row_col_plan)}%."""
+                        break
+                
+                elif relut == "percentage_group_tectecr":
+
+                    if worksheet[row][col].value == list_search[1]:
+
+                        col_arguments.append(col)
+                
+
+                    elif worksheet[row][col].value == list_search[0]:
+
+                        col_arguments.append(col)
+
+                    elif len(col_arguments) == 2:
+
+                        break
+                       
+                elif relut == "student_assessment":
+
+                    if worksheet[row][col].value == list_search[0]:
+
+                        col_arguments.append(col)
+                       
+                    elif worksheet[row][col].value == list_search[1]:
+                       
+                       col_arguments.append(col)
+                    elif (
+                        (worksheet[row][col].value == list_search[2])or
+                        (worksheet[row][col].value == list_search[3])or
+                        (worksheet[row][col].value == list_search[4])):
+                        col_arguments.append(col)
+                       
+                elif relut =="percentage_of_homework_per_mont":
+
+                    if worksheet[row][col].value == list_search[0]:
+
+                        col_arguments.append(col)
+
+                    elif worksheet[row][col].value == list_search[1]:
+
+                        col_arguments.append(col)
+
+                    elif worksheet[row][col].value == list_search[2]:
+
+                        col_arguments.append(col)
+
+        print(col_arguments)
+
+                        
+                
+
+                            
+        
+       # Вывод сообщени 
+        if relut=="mouth spand" or  relut=="day spand" or relut == "week spand" or relut =="percentage_group_tectecr":
+            for row in range(3,worksheet.max_row):
+                if col_arguments[0] != 0 or col_arguments[1] == 0 and len(col_arguments) == 0:
+                    text = "Таких данных нет в документе "
+
                     list_text.append(text)
+
+                    return list_text
+                
                 else:
-                    text = "ок"
+                    
+                    if relut=="mouth spand" or  relut=="day spand" or relut == "week spand":
+                        worksheet_row_col_fio_teacher = worksheet[row][col_arguments[1]].value
+                        worksheet_row_col_relet_1 = int(worksheet[row][col_arguments[2]].value)
+                        worksheet_row_col_relet_2 = int(worksheet[row][col_arguments[3]].value)
+                        if percentage(worksheet_row_col_relet_1, worksheet_row_col_relet_2) < 75:
+                            text = f"""Добрый день - {worksheet_row_col_fio_teacher}. У Вас не выполнена норма по {list_search[1]} ДЗ студентов. Нужно исправить это.У Вас  процент проверки ДЗ: {percentage(worksheet_row_col_relet_1, worksheet_row_col_relet_2)}%."""
+                            list_text.append(text)
+                        else:
+                            text = "ок"
+                    elif relut =="percentage_group_tectecr":
+                        worksheet_row_col_fio_teacher = worksheet[row][col_arguments[0]].value
+                        worksheet_row_col_procent_teacher = int(worksheet[row][col_arguments[1]].value.strip("%"))
+                        worksheet_row_col_procent_teacher_finall = int(worksheet[worksheet.max_row][col_arguments[1]].value)
+                        if worksheet_row_col_procent_teacher < worksheet_row_col_procent_teacher_finall:
+                            text = f"""Добрый день {worksheet_row_col_fio_teacher}! У вас плохая посещаемость предмета на вашей паре.Вот  {worksheet_row_col_procent_teacher}%."""
+                            list_text.append(text)
+                        else:
+                            text = "Ок"
+        elif relut == "student_assessment" or  relut=="percentage_of_homework_per_mont":
+            for row in range(2, worksheet.max_row):
+                if relut == "student_assessment":
+                    if col_arguments[0] == 0 and col_arguments[1] != 0  and  len(col_arguments) != 0:
+                        worksheet_row_col_name_student = worksheet[row][col_arguments[0] ].value
+                        worksheet_row_col_grop = worksheet[row][col_arguments[1]].value
+                        worksheet_row_col_homework = int(worksheet[row][col_arguments[2]].value)
+                        worksheet_row_col_classroom = int(worksheet[row][col_arguments[3]].value)
+                        if (worksheet_row_col_homework < 3 or worksheet_row_col_classroom < 3
+                                or percentage(worksheet_row_col_homework, worksheet_row_col_classroom) < 3):
+                            text = f"""Cтудент:{worksheet_row_col_name_student} - {worksheet_row_col_grop} Дз- {worksheet_row_col_homework} или КЛ_Р- {worksheet_row_col_classroom}.Как поступить в данной ситуации?"""
+                            list_text.append(text)
+                        else:
+                            continue
+                    else:
+                        text = "Таких данных нет в документе "
+                        list_text.append(text)
+                        return list_text
+                if relut == "percentage_of_homework_per_mont":
+                    if len(col_arguments) != 0:
+                        worksheet_row_col_name_student = worksheet[row][col_arguments[0]].value
+                        worksheet_row_col_grop = worksheet[row][col_arguments[1]].value
+                        worksheet_row_col_homework = int(worksheet[row][col_arguments[2]].value)
+                    if worksheet_row_col_homework < 50:
+                        text = (
+                        f"""Студент:{worksheet_row_col_name_student}-{worksheet_row_col_grop} и процент дз:{worksheet_row_col_homework}%.""")
+                        list_text.append(text)
+        
 
         worbook.close()
         return list_text
+           
+            
 
-def search_average_rating_grop(file ):
+def search_average_rating_grop(file):
     text = ""
     list_text = []
     list_procent= []

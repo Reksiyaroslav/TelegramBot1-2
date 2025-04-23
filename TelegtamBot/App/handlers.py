@@ -1,7 +1,7 @@
 from aiogram import Router, F
 from aiogram.types import Message,CallbackQuery
 from aiogram.filters import CommandStart, Command
-from  aiogram.types import FSInputFile
+from aiogram.types import FSInputFile
 import App.keyboards as kb
 import App.logic as log
 import  os
@@ -9,6 +9,13 @@ from Text.telegram_text_message import *
 router = Router()
 inform_text = ""
 list_text = []
+list_serach_Tabel = [["Проверено","План","ФИО преподавателя"],
+                     ["Выдано","План","ФИО преподавателя"],
+                     ["Средняя посещаемость","ФИО преподавателя"],
+                     ["FIO","Группа","Classroom","Homework","Average score","Exam"],
+                     ["FIO","Группа","Percentage Homework"]
+                     ]
+
 class FmsContext():
     text=""
     time=""
@@ -116,18 +123,19 @@ async def category_log_student_assessment(callback: CallbackQuery):
 
 @router.message()
 async def create_file(message: Message):
+    list_serach = []
     inform_text = FmsContext.text
-    if not  os.getcwd().endswith("Files") :
-        os.chdir(f"Files")
+    if not os.getcwd().endswith("Files") :
+        os.chdir("Files")
     await message.answer("файл получен")
     if not os.path.isdir(f"Files {message.from_user.id}"):
         os.mkdir(f"Files {message.from_user.id}")
     #os.chdir(f"Files {message.from_user.id}"")
 
-    if inform_text == text_message_average_rating_grop:
+    if inform_text == str(text_message_average_rating_grop):
         new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
-            list_text = log.search_average_rating_grop(file=new_file.file_name)
+            list_text = log.search_List_text(new_file,list_serach_Tabel[2])
             inform_text = f"{list_text}"
             inform_text = inform_text.replace(',', "\n")
             inform_text = inform_text.strip("[]")
@@ -136,10 +144,13 @@ async def create_file(message: Message):
         else:
             await  message.answer(text_error_obel)
 
-    elif inform_text ==text_message_issued_homework:
+    elif inform_text ==str(text_message_issued_homework):
         new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
-            list_text= log.search_verified_homework(new_file,FmsContext.time)
+            list_serach_Tabel[1].insert(0,FmsContext.time)
+            print(list_serach_Tabel[1])
+            list_serach =list_serach_Tabel[1]
+            list_text= log.search_List_text(new_file,list_serach)
             inform_text = f"{list_text}"
             inform_text = inform_text.replace(',', "\n")
             inform_text = inform_text.strip("[]")
@@ -148,10 +159,14 @@ async def create_file(message: Message):
         else:
             await  message.answer(text_error_obel)
 
-    elif inform_text == "Вы выбрали узнать сколько выдано дз у преподавателя":
+    elif inform_text == str(text_message_verified_homework):
         new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
-            list_text= log.search_issued_homework(new_file,FmsContext.time)
+            list_serach_Tabel[0].insert(0,FmsContext.time)
+            print(list_serach_Tabel[0])
+            list_serach =list_serach_Tabel[0]
+           
+            list_text= log.search_List_text(new_file,list_serach)
             inform_text = f"{list_text}"
             inform_text = inform_text.replace(',',"\n")
             inform_text = inform_text.strip("[]")
@@ -160,11 +175,11 @@ async def create_file(message: Message):
         else:
             await  message.answer(text_error_obel)
 
-    elif inform_text == text_message_student_asessment:
+    elif inform_text == str(text_message_student_asessment):
         new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
             file = FSInputFile(new_file.file_id, "Infor_file.xlsx")
-            list_text= log.search_student_assessment(file.filename)
+            list_text= log.search_List_text(file,list_serach_Tabel[3])
             inform_text = f"{list_text}"
             inform_text = inform_text.replace(',', "\n")
             inform_text = inform_text.strip("[]")
@@ -173,13 +188,13 @@ async def create_file(message: Message):
         else:
             await  message.answer(text_error_obel)
 
-    elif inform_text == text_message_homeworl_student:
+    elif inform_text == str(text_message_homeworl_student):
         new_file = message.document
         if new_file.file_name.endswith(".xlsx"):
 
             list_text_1 = []
             file = FSInputFile(new_file.file_id, "Infor_file.xlsx")
-            list_text= log.search_percentage_of_homework_per_month(file.filename)
+            list_text= log.search_List_text(file,list_serach_Tabel[4])
             if len(list_text) <50:
                 list_text = log.search_issued_homework(new_file, FmsContext.time)
                 inform_text = f"{list_text}"
