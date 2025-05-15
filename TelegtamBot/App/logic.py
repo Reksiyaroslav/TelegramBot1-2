@@ -31,6 +31,7 @@ def open_tabel(relut:str,list_search)->str:
     elif relut =="student_assessment":
         return list_search[2]
 # Нахождени листа кторый пришёл на результат 
+
 def provert_list(list_text:list)->str:
     len_list_seract = len(list_text)
     match len_list_seract:
